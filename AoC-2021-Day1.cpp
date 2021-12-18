@@ -6,6 +6,7 @@
 //Input:	name of data file
 //Output:	ammount of values bigger then the previous one
 int check_depth_increase(std::string* filename) {
+
 	//Import values
 	std::ifstream input(*filename);
 	std::vector<int> list;
@@ -51,7 +52,7 @@ int check_depth_window_increase(std::string* filename) {
 }
 
 int main() {
-	std::string input = "input.txt";
-	std::cout << check_depth_increase(&input) << " measurement(s) were bigger than the previous one\n";
-	std::cout << check_depth_window_increase(&input) << " measurement window(s) were bigger than the previous one\n";
+	std::string inputFile = "/Data/day1.txt";
+	std::cout << check_depth_increase(&inputFile) << " measurement(s) were bigger than the previous one\n";
+	std::cout << check_depth_window_increase(&inputFile) << " measurement window(s) were bigger than the previous one\n";
 }

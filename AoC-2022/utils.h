@@ -1,0 +1,1 @@
+void ReadLines(const char *fileName, char **strArr, int maxLen, int maxSize);

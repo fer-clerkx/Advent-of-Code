@@ -6,9 +6,9 @@
 static int solvePuzzle01A( char **input );
 static int solvePuzzle01B( char **input );
 
-static const char INPUTFILE[] = "input/input01.txt";
-static const int INPUTLEN = 7;
-static const int INPUTSIZE = 2252;
+#define INPUTFILE "input/input01.txt"
+#define INPUTLEN 7
+#define INPUTSIZE 2252
 
 void printPuzzle01( void ) {
 	//Read input file

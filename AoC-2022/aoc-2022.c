@@ -7,12 +7,15 @@ int main(int argc, char **argv) {
 	if(argc == 2) {
 		select = atoi(argv[1]);
 	} else {
-		select = 1;
+		select = 2;
 	}
 
 	switch(select) {
 		case 1:
 			printPuzzle01();
+			break;
+		case 2:
+			printPuzzle02();
 			break;
 		default:
 			printf("Enter valid select value\n");

@@ -3,7 +3,7 @@ TARGET=aoc-2022
 
 all: $(TARGET)
 
-$(TARGET): aoc-2022.o puzzle01.o utils.o
+$(TARGET): aoc-2022.o puzzle01.o puzzle02.o utils.o
 	$(CC) -o $@ $^
 
 aoc-2022.o: aoc-2022.c
@@ -13,6 +13,9 @@ utils.o: utils.c
 	$(CC) -c $^
 
 puzzle01.o: puzzle01.c
+	$(CC) -c $^
+
+puzzle02.o: puzzle02.c
 	$(CC) -c $^
 
 clean:

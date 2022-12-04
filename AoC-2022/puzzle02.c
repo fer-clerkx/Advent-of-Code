@@ -10,8 +10,6 @@ static int solvePuzzle02B( char **input );
 #define INPUTLEN 5
 #define INPUTSIZE 2501
 
-enum choice {rock, paper, scissors};
-
 void printPuzzle02( void ) {
 	//Read input file
 	char *input[INPUTSIZE];

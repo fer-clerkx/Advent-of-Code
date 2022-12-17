@@ -22,6 +22,9 @@ void printPuzzle01( void ) {
 	printf("Puzzle 01 Part One: %d\n", solutionA);
 	int solutionB = solvePuzzle01B(input);
 	printf("Puzzle 01 Part Two: %d\n", solutionB);
+	for (int i = 0; i < INPUTSIZE; i++) {
+		free(input[i]);
+	}
 }
 
 static int solvePuzzle01A( char **input ) {

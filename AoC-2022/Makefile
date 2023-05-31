@@ -3,7 +3,7 @@ TARGET=aoc-2022
 
 all: $(TARGET)
 
-$(TARGET): aoc-2022.o puzzle01.o puzzle02.o puzzle03.o utils.o
+$(TARGET): aoc-2022.o puzzle01.o puzzle02.o puzzle03.o puzzle04.o utils.o
 	$(CC) -o $@ $^
 
 aoc-2022.o: aoc-2022.c
@@ -21,7 +21,10 @@ puzzle02.o: puzzle02.c
 puzzle03.o: puzzle03.c
 	$(CC) -c $^
 
+puzzle04.o: puzzle04.c
+	$(CC) -c $^
+
 clean:
-	del *.o *.exe
+	rm *.o *.exe
 
 remake: clean all

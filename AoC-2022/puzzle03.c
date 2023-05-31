@@ -15,7 +15,7 @@ void printPuzzle03( void ) {
 	for (int i = 0; i < INPUTLENGTH; i++)
 		items[i] = malloc(INPUTSIZE);
 
-	parseInput(INPUTFILE, items);
+	parseInput03(INPUTFILE, items);
 
 	int solutionA = solvePuzzle03A(items);
 	printf("Puzzle 03 Part One: %d\n", solutionA);
@@ -27,7 +27,7 @@ void printPuzzle03( void ) {
 		free(items[i]);
 }
 
-void parseInput(const char *FILENAME, char **items) {
+void parseInput03(const char *FILENAME, char **items) {
 	FILE *fp = fopen(FILENAME, "r");
 	if(fp == NULL) {
 		fprintf(stderr, "Error opening %s: %s", FILENAME, strerror(errno));

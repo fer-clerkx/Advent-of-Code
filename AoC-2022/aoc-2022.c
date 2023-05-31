@@ -7,7 +7,7 @@ int main(int argc, char **argv) {
 	if(argc == 2) {
 		select = atoi(argv[1]);
 	} else {
-		select = 3;
+		select = 4;
 	}
 
 	switch(select) {
@@ -19,6 +19,9 @@ int main(int argc, char **argv) {
 			break;
 		case 3:
 			printPuzzle03();
+			break;
+		case 4:
+			printPuzzle04();
 			break;
 		default:
 			printf("Enter valid select value\n");

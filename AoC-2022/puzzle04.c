@@ -34,6 +34,8 @@ void parseInput04(const char *FILENAME, t_pair_assign *assignments) {
 		}
 		assignments[i] = pair;
 	}
+
+	fclose(fp);
 }
 
 int solvePuzzle04A(const t_pair_assign *assignments) {

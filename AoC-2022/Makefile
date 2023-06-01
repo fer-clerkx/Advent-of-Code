@@ -1,30 +1,21 @@
 CC=gcc
 TARGET=aoc-2022
+SRC_FILES=$(wildcard *.c)
+OBJ_DIR=build
+OBJ_FILES=$(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC_FILES))
 
 all: $(TARGET)
 
-$(TARGET): aoc-2022.o puzzle01.o puzzle02.o puzzle03.o puzzle04.o utils.o
-	$(CC) -o $@ $^
+$(TARGET): $(OBJ_FILES)
+	$(CC) $^ -o $@
 
-aoc-2022.o: aoc-2022.c
-	$(CC) -c $^
+$(OBJ_DIR)/%.o: %.c create_dir
+	$(CC) -c $< -o $@
 
-utils.o: utils.c
-	$(CC) -c $^
-
-puzzle01.o: puzzle01.c
-	$(CC) -c $^
-
-puzzle02.o: puzzle02.c
-	$(CC) -c $^
-
-puzzle03.o: puzzle03.c
-	$(CC) -c $^
-
-puzzle04.o: puzzle04.c
-	$(CC) -c $^
+create_dir:
+	mkdir -p $(OBJ_DIR)
 
 clean:
-	rm *.o *.exe
+	rm -rf $(OBJ_DIR) $(TARGET).exe
 
 remake: clean all

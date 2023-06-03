@@ -10,7 +10,7 @@ all: $(TARGET)
 $(TARGET): $(OBJ_FILES)
 	$(CC) $^ -o $@
 
-$(OBJ_DIR)/%.o: %.c $(OBJ_DIR_SENTINEL)
+$(OBJ_DIR)/%.o: %.c %.h $(OBJ_DIR_SENTINEL)
 	$(CC) -c $< -o $@
 
 $(OBJ_DIR_SENTINEL):

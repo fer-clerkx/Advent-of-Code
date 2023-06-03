@@ -1,10 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "utils.h"
-#include "aoc-2022.h"
-
-static int solvePuzzle02A( char **input );
-static int solvePuzzle02B( char **input );
+#include "puzzle02.h"
 
 #define INPUTFILE "input/input02.txt"
 #define INPUTLEN 5
@@ -27,7 +24,7 @@ void printPuzzle02( void ) {
 	}
 }
 
-static int solvePuzzle02A( char **input ) {
+int solvePuzzle02A( char **input ) {
 	int totalScore = 0;
 	for (int i = 0; i < INPUTSIZE; i++) {
 		int roundScore = 0;
@@ -80,7 +77,7 @@ static int solvePuzzle02A( char **input ) {
 	return totalScore;
 }
 
-static int solvePuzzle02B( char **input ) {
+int solvePuzzle02B( char **input ) {
 	int totalScore = 0;
 	for (int i = 0; i < INPUTSIZE; i++) {
 		int roundScore = 0;

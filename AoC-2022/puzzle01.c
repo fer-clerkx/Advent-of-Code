@@ -1,10 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "utils.h"
-#include "aoc-2022.h"
-
-static int solvePuzzle01A( char **input );
-static int solvePuzzle01B( char **input );
+#include "puzzle01.h"
 
 #define INPUTFILE "input/input01.txt"
 #define INPUTLEN 7
@@ -27,7 +24,7 @@ void printPuzzle01( void ) {
 	}
 }
 
-static int solvePuzzle01A( char **input ) {
+int solvePuzzle01A( char **input ) {
 	//Get largest calorie count
 	int maxCalories = 0;
 	int localCalories = 0;
@@ -45,7 +42,7 @@ static int solvePuzzle01A( char **input ) {
 	return maxCalories;
 }
 
-static int solvePuzzle01B( char **input ) {
+int solvePuzzle01B( char **input ) {
 	//Get largest calorie count
 	int maxCalories[3] = {0};
 	int localCalories = 0;

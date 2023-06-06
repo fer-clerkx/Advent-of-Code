@@ -1,4 +1,5 @@
 CC=gcc
+CFLAGS=-Wall -Werror -Wpedantic -g
 TARGET=aoc-2022.exe
 SRC_FILES=$(wildcard *.c)
 OBJ_DIR=build
@@ -8,10 +9,10 @@ OBJ_FILES=$(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC_FILES))
 all: $(TARGET)
 
 $(TARGET): $(OBJ_FILES)
-	$(CC) $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@
 
 $(OBJ_DIR)/%.o: %.c %.h $(OBJ_DIR_SENTINEL)
-	$(CC) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR_SENTINEL):
 	mkdir -p $(OBJ_DIR)

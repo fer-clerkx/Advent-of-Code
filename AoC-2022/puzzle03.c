@@ -8,7 +8,7 @@
 #define INPUTFILE "input/input03.txt"
 #define INPUTLENGTH 300
 #define INPUTSIZE 55
-#define BIT_MASK 0b111
+#define BIT_MASK 0x7 //0b111
 
 void printPuzzle03( void ) {
 	char *items[INPUTLENGTH];
@@ -57,13 +57,13 @@ int solvePuzzle03A( char **items ) {
 		// Check first half
 		for (int j = 0; j < sackSize/2; j++) {
 			item = items[i][j];
-			map[item] = true;
+			map[(int)item] = true;
 		}
 
 		// Check second half
 		for (int j = sackSize/2; j < sackSize; j++) {
 			item = items[i][j];
-			if (map[item] == true) {
+			if (map[(int)item] == true) {
 				if ( islower(item) )
 					score += item - 'a' + 1;
 				else
@@ -89,10 +89,10 @@ int solvePuzzle03B( char **items ) {
 
 		for (int j = 0; j < sackSize; j++) {
 			item = items[i][j];
-			map[item] |= 1 << ((i+1)%3);
+			map[(int)item] |= 1 << ((i+1)%3);
 
 			// Check if first 3 bits are set
-			if ((map[item] & BIT_MASK) == BIT_MASK) {
+			if ((map[(int)item] & BIT_MASK) == BIT_MASK) {
 				if ( islower(item) )
 					score += item - 'a' + 1;
 				else

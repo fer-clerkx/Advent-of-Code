@@ -2,34 +2,32 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include <limits.h>
 #include "puzzle07.h"
 
-// #define INPUT_FILE "input/input07.txt"
-#define INPUT_FILE "input/test.txt"
-#define INPUT_LENGTH 23
+#define INPUT_FILE "input/input07.txt"
+#define INPUT_LENGTH 1013
 #define DIR_SIZE_THRESHOLD 100000
+#define TOTAL_SPACE 70000000
+#define TARGET_UNUSED_SPACE 30000000
 
-#define CHECK(X) ({ \
-	if (X) {
+#define CHECK(X) do { \
+	if (X) { \
 		fprintf(stderr, "ERROR :%d -- %s\n", __LINE__, strerror(errno)); \
 		exit(EXIT_FAILURE); \
-	}
-})
+	} \
+} while(0)
 
 void printPuzzle07(void) {
 	t_dir *top = malloc(sizeof(t_dir));
-	if (top == NULL) {
-		fprintf(stderr, "Couldn't allocate memory for top: %s\n", strerror(errno));
-		exit(EXIT_FAILURE);
-	}
-	printf("debug\n");
+	CHECK(top == NULL);
+
 	parseInput07(INPUT_FILE, top);
 
-	printf("Hello world0\n");
 
 	const int solutionA = solvePuzzle07A(top);
 	printf("Puzzle 07 part A: %d\n", solutionA);
-	const int solutionB = solvePuzzle07B();
+	const int solutionB = solvePuzzle07B(top);
 	printf("Puzzle 07 part B: %d\n", solutionB);
 
 	free07(top);
@@ -52,10 +50,7 @@ void parseInput07(const char *FILENAME, t_dir *top) {
 
 	parseHelper07(fp, top, &lineNumber);
 
-	printf("done\n");
-
 	CHECK( fclose(fp) == EOF );
-	printf("done2\n");
 }
 
 void parseHelper07(FILE *fp, t_dir *dir, int *lineNumber) {
@@ -63,16 +58,13 @@ void parseHelper07(FILE *fp, t_dir *dir, int *lineNumber) {
 	while (*lineNumber < INPUT_LENGTH) {
 		(*lineNumber)++;
 		CHECK( fgets(line, 25, fp) == NULL );
-		printf("debug1\n");
 
 		char *token = strtok(line, " \n");
 		CHECK(token == NULL);
-		printf("debug2\n");
 
 		if (token[0] == '$') {
 			token = strtok(NULL, " \n");
 			CHECK(token == NULL);
-			printf("debug3\n");
 			
 			// Ignore ls command
 			if ( strcmp(token, "ls") == 0 )
@@ -81,14 +73,12 @@ void parseHelper07(FILE *fp, t_dir *dir, int *lineNumber) {
 			else {
 				token = strtok(NULL, " \n");
 				CHECK(token == NULL);
-				printf("debug4\n");
 
 				if ( strcmp(token, "..") == 0 )
 					return;
 				else {
 					for (int i = 0; i < dir->dirCount; i++) {
 						if ( strcmp(token, dir->dirName[i]) == 0 ) {
-							printf("debug5a\n");
 							parseHelper07(fp, dir->dir[i], lineNumber);
 							break;
 						}
@@ -100,62 +90,52 @@ void parseHelper07(FILE *fp, t_dir *dir, int *lineNumber) {
 		} else if ( strcmp(token, "dir") == 0 ) {
 			token = strtok(NULL, " \n");
 			CHECK(token == NULL);
-			printf("debug5\n");
 
 			// Expand dirName array
 			dir->dirName = realloc(dir->dirName, (dir->dirCount+1)*sizeof(char *));
 			CHECK(dir->dirName == NULL);
-			printf("debug6\n");
 
 			// Allocate new dirName string
 			dir->dirName[dir->dirCount] = malloc(15);
 			CHECK(dir->dirName[dir->dirCount] == NULL);
-			printf("debug7\n");
 			strncpy(dir->dirName[dir->dirCount], token, 15);
 
 			// Expand dir array
 			dir->dir = realloc(dir->dir, (dir->dirCount+1)*sizeof(t_dir *));
 			CHECK(dir->dir == NULL);
-			printf("debug8\n");
 
 			// Allocate new dir struct
-			dir->dir[dir->dirCount] = malloc(sizeof(t_dir));
-			CHECK(dir->dir[dir->dirCount] == NULL);
-			printf("debug9\n");
+			t_dir *newDir = malloc(sizeof(t_dir));
+			CHECK(newDir == NULL);
+			memset(newDir, 0, sizeof(t_dir));
+			dir->dir[dir->dirCount] = newDir;
 			dir->dirCount++;
 
 		// new file
 		} else {
 			// Expand fileSize array
-			dir->fileSize = realloc(dir->fileSize, (dir->dirCount+1)*sizeof(int));
+			dir->fileSize = realloc(dir->fileSize, (dir->fileCount+1)*sizeof(int));
 			CHECK(dir->fileSize == NULL);
-			printf("debug10\n");
 			dir->fileSize[dir->fileCount] = strtol(token, NULL, 10);
 
 			// Expand fileName array
-			dir->fileName = realloc(dir->fileName, (dir->dirCount+1)*sizeof(char *));
+			dir->fileName = realloc(dir->fileName, (dir->fileCount+1)*sizeof(char *));
 			CHECK(dir->fileName == NULL);
-			printf("debug11\n");
 
 			token = strtok(NULL, " \n");
 			CHECK(token == NULL);
-			printf("debug12\n");
 
 			// Allocate new fileName string
 			dir->fileName[dir->fileCount] = malloc(15);
 			CHECK(dir->fileName[dir->fileCount] == NULL);
-			printf("debug13\n");
 			strncpy(dir->fileName[dir->fileCount], token, 15);
 
 			dir->fileCount++;
 		}
-		printf("Completed line %d\n", *lineNumber);
 	}
 }
 
-
 int solvePuzzle07A(const t_dir *top) {
-	printf("Hello world\n");
 	int score = 0;
 	solvePuzzle07A_Helper(top, &score);
 	return score;
@@ -175,13 +155,43 @@ int solvePuzzle07A_Helper(const t_dir *dir, int *globalCount) {
 	if (dirSize < DIR_SIZE_THRESHOLD)
 		*globalCount += dirSize;
 
-	printf("dirSize = %d\n globalCount = %d\n", dirSize, *globalCount);
-
 	return dirSize;
 }
 
-int solvePuzzle07B() {
-	return 0;
+int solvePuzzle07B(const t_dir *top) {
+	int *dirSizeArray = NULL;
+	int arraySize = 0;
+
+	const int USED_SPACE = solvePuzzle07B_Helper(top, &dirSizeArray, &arraySize);
+	const int TO_FREE_SPACE = TARGET_UNUSED_SPACE - (TOTAL_SPACE - USED_SPACE);
+
+	int minDirSize = INT_MAX;
+	for (int i = 0; i < arraySize; i++) {
+		int dirSize = dirSizeArray[i];
+		if (dirSize >= TO_FREE_SPACE && dirSize < minDirSize)
+			minDirSize = dirSize;
+	}
+	free(dirSizeArray);
+
+	return minDirSize;
+}
+
+int solvePuzzle07B_Helper(const t_dir *dir, int **dirSizeArray, int *arraySize) {
+	int dirSize = 0;
+	for (int i = 0; i < dir->dirCount; i++) {
+		dirSize += solvePuzzle07B_Helper(dir->dir[i], dirSizeArray, arraySize);
+	}
+
+	for (int i = 0; i < dir->fileCount; i++) {
+		dirSize += dir->fileSize[i];
+	}
+
+	(*arraySize)++;
+	*dirSizeArray = realloc(*dirSizeArray, (*arraySize)*sizeof(int));
+	CHECK(*dirSizeArray == NULL);
+	(*dirSizeArray)[(*arraySize)-1] = dirSize;
+
+	return dirSize;
 }
 
 void free07(t_dir *dir) {
@@ -193,8 +203,9 @@ void free07(t_dir *dir) {
 	free(dir->dir);
 	free(dir->dirName);
 
-	for (int i = 0; i < dir->fileCount; i++)
+	for (int i = 0; i < dir->fileCount; i++) {
 		free(dir->fileName[i]);
+	}
 	free(dir->fileName);
 	free(dir->fileSize);
 }

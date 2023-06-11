@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -Werror -Wpedantic -g
-TARGET=aoc-2022.exe
+TARGET=aoc-2022
 SRC_FILES=$(wildcard *.c)
 OBJ_DIR=build
 OBJ_DIR_SENTINEL=$(OBJ_DIR)/.exists

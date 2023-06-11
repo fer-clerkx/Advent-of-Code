@@ -1,4 +1,4 @@
-*.exe
+aoc-2022
 *.vscode/
 *.o
 **/build

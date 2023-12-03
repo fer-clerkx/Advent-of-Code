@@ -12,5 +12,6 @@
 #include "puzzle09.h"
 #include "puzzle10.h"
 #include "puzzle11.h"
+#include "puzzle12.h"
 
 #endif //_AOC_2022_H

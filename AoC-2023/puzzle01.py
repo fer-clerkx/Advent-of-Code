@@ -1,4 +1,4 @@
-import re
+import regex as re
 
 FILE_NAME = "input/input01.txt"
 NUMBER_DICT = {
@@ -38,7 +38,7 @@ def solvePuzzle01B():
 		if line == '':
 			break
 		patern = '\d|' + '|'.join(NUMBER_DICT.keys())
-		digits = re.findall(patern, line)
+		digits = re.findall(patern, line, overlapped=True)
 		if NUMBER_DICT.get(digits[0]):
 			digitFirst = NUMBER_DICT.get(digits[0])
 		else:

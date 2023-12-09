@@ -1,7 +1,7 @@
 import re
 from collections import namedtuple
 
-FILE_PATH = "input/test.txt"
+FILE_PATH = "input05.txt"
 
 def main():
 	solutionA = solvePuzzle05A()
@@ -80,7 +80,46 @@ def solvePuzzle05B():
 			inputMapList = map(int, re.findall("\d+", inputMapString))
 			inputMaps[-1].append(mapTuple._make(inputMapList))
 
+	# Sort maps by source
+	def mapSorting(e):
+		return e.source
+	for i in range(len(inputMaps)):
+		inputMaps[i].sort(key=mapSorting)
+
+	# Convert maps to ranges
+	mapRanges = []
+	rangeTuple = namedtuple('rangeTuple', 'source destination')
+	for inputMap in inputMaps:
+		mapRanges.append([])
+		if inputMap[0].source > 0:
+			sourceMapRange = range(0, inputMap[0].source)
+			mapRanges[-1].append(rangeTuple._make([sourceMapRange, sourceMapRange]))
+		for mapLine in inputMap:
+			# if mapRanges[-1][-1][-1]+1 < mapLine.source:
+			# 	mapRanges[-1].append(range(mapRanges[-1][-1][1], mapLine.source))
+			sourceMapRange = range(mapLine.source, mapLine.source+mapLine.range)
+			destinationMapRange = range(mapLine.destination, mapLine.destination+mapLine.range)
+			mapRanges[-1].append(rangeTuple._make([sourceMapRange, destinationMapRange]))
+
+	# Iterate through mapRanges
+	for mapRange in mapRanges:
+		# Iterate through number ranges
+		newNumberRange = []
+		for numberRange in numberRanges:
+			# Iterate through single map ranges
+			for mapLine in mapRange:
+				# numberRange and mapLine overlap?
+				if numberRange.start < mapLine.source.stop and numberRange.stop > mapLine.source.start:
+					numberSubRange = range(max(numberRange.start, mapLine.source.start), min(numberRange.stop, mapLine.source.stop))
+					numberDestinationStart = mapLine.destination[numberSubRange.start-mapLine.source.start]
+					numberDestinationStop = mapLine.destination[numberSubRange.stop-mapLine.source.start-1]+1
+					newNumberRange.append(range(numberDestinationStart, numberDestinationStop))
+			if numberRange.stop > mapRange[-1].source.stop:
+				numberSubRange = range(max(numberRange.start, mapRange[-1].source.stop), numberRange.stop)
+				newNumberRange.append(numberSubRange)
+		numberRanges = newNumberRange
+
 	# Return smallest number
-	return 0
+	return min(numberRanges, key=lambda x: x.start).start
 
 main()

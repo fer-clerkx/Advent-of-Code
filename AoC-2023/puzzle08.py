@@ -55,8 +55,7 @@ def solvePuzzle08B():
 		if node.name[2] == 'A':
 			currentNodes.append(node)
 
-	loopTuple = namedtuple('loopTuple', 'entryStep loopLength finishNodeStep')
-	loops = []
+	loopLengths = []
 	for i, currentNode in enumerate(currentNodes):
 		step = 0
 		states = {}
@@ -70,15 +69,8 @@ def solvePuzzle08B():
 			else:
 				currentNode = nodes[currentNode.right]
 			step += 1
-			if currentNode.name[2] == 'Z':
-				finishNodeStep = step
 		loopEntryStep = states[(currentNode, j%len(instructions))]
-		loopLength = step-loopEntryStep
-		loops.append(loopTuple(loopEntryStep, loopLength, finishNodeStep))
-	loopsStep = np.array(list(zip(*loops))[2])
-	while len(set(loopsStep)) > 1:
-		earliestLoop = np.argmin(loopsStep)
-		loopsStep[earliestLoop] += loops[earliestLoop].loopLength
-	return loopsStep[0]
+		loopLengths.append(step-loopEntryStep)
+	return np.lcm.reduce(loopLengths)
 
 main()

@@ -1,4 +1,5 @@
-import re
+import re,itertools
+import numpy as np
 from collections import namedtuple
 
 FILE_PATH = "input/input08.txt"
@@ -6,8 +7,8 @@ FILE_PATH = "input/input08.txt"
 nodeTuple = namedtuple("nodeTuple", "name left right")
 
 def main():
-	# solutionA = solvePuzzle08A()
-	# print("Solution A:", solutionA)
+	solutionA = solvePuzzle08A()
+	print("Solution A:", solutionA)
 	solutionB = solvePuzzle08B()
 	print("Solution B:", solutionB)
 
@@ -26,13 +27,13 @@ def solvePuzzle08A():
 	step = 0
 	while True:
 		for instruction in instructions:
-			if currentNode.name == "ZZZ":
-				break
-			elif instruction == 'L':
+			if instruction == 'L':
 				currentNode = nodes[currentNode.left]
 			else:
 				currentNode = nodes[currentNode.right]
 			step += 1
+			if currentNode.name == "ZZZ":
+				break
 		if currentNode.name == "ZZZ":
 			break
 
@@ -54,21 +55,30 @@ def solvePuzzle08B():
 		if node.name[2] == 'A':
 			currentNodes.append(node)
 
-	step = 0
-	while True:
-		for instruction in instructions:
-			for i, currentNode in enumerate(currentNodes):
-				print(step)
-				if instruction == 'L':
-					currentNodes[i] = nodes[currentNode.left]
-				else:
-					currentNodes[i] = nodes[currentNode.right]
-			step += 1
-			if all(name[2] == 'Z' for name in list(zip(*currentNodes))[0]):
+	loopTuple = namedtuple('loopTuple', 'entryStep loopLength finishNodeStep')
+	loops = []
+	for i, currentNode in enumerate(currentNodes):
+		step = 0
+		states = {}
+		for j, instruction in enumerate(itertools.cycle(instructions)):
+			# Check if state is in map
+			if (currentNode, j%len(instructions)) in states:
 				break
-		if all(name[2] == 'Z' for name in list(zip(*currentNodes))[0]):
-			break
-
-	return step
+			states[(currentNode, j%len(instructions))] = step
+			if instruction == 'L':
+				currentNode = nodes[currentNode.left]
+			else:
+				currentNode = nodes[currentNode.right]
+			step += 1
+			if currentNode.name[2] == 'Z':
+				finishNodeStep = step
+		loopEntryStep = states[(currentNode, j%len(instructions))]
+		loopLength = step-loopEntryStep
+		loops.append(loopTuple(loopEntryStep, loopLength, finishNodeStep))
+	loopsStep = np.array(list(zip(*loops))[2])
+	while len(set(loopsStep)) > 1:
+		earliestLoop = np.argmin(loopsStep)
+		loopsStep[earliestLoop] += loops[earliestLoop].loopLength
+	return loopsStep[0]
 
 main()

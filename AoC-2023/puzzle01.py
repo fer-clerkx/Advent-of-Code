@@ -1,6 +1,6 @@
 import re
 
-FILE_NAME = "input/input01.txt"
+FILE_PATH = f"input/input{__file__[-5:-3]}.txt"
 NUMBER_DICT = {
     "one": "one1one",
     "two": "two2two",
@@ -13,7 +13,8 @@ NUMBER_DICT = {
     "nine": "nine9nine"
 }
 
-with open(FILE_NAME) as input_file:
+
+with open(FILE_PATH) as input_file:
     input_string = input_file.read().strip()
 
 def sum_of_digits(string: str):

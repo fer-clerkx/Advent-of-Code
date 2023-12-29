@@ -2,7 +2,7 @@ import re,itertools
 import numpy as np
 from collections import namedtuple
 
-FILE_PATH = "input/input08.txt"
+FILE_PATH = f"input/input{__file__[-5:-3]}.txt"
 
 nodeTuple = namedtuple("nodeTuple", "name left right")
 

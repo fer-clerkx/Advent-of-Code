@@ -1,6 +1,6 @@
 import re
 
-FILE_PATH = "input/input03.txt"
+FILE_PATH = f"input/input{__file__[-5:-3]}.txt"
 
 def main():
     solutionA = solvePuzzle03A()

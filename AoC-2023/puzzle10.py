@@ -1,6 +1,6 @@
 import numpy as np
 
-FILE_PATH = "input/input10.txt"
+FILE_PATH = f"input/input{__file__[-5:-3]}.txt"
 
 def main():
     solutionA = solvePuzzle10A()

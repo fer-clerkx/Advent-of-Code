@@ -2,7 +2,7 @@ import re
 from enum import Enum
 from collections import Counter
 
-FILE_PATH = "input/input07.txt"
+FILE_PATH = f"input/input{__file__[-5:-3]}.txt"
 
 class Types(Enum):
     HIGH = 0

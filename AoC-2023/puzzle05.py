@@ -1,7 +1,7 @@
 import re
 from collections import namedtuple
 
-FILE_PATH = "input05.txt"
+FILE_PATH = f"input/input{__file__[-5:-3]}.txt"
 
 def main():
     solutionA = solvePuzzle05A()

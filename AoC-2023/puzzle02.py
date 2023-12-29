@@ -1,6 +1,6 @@
 import re
 
-FILE_PATH = "input/input02.txt"
+FILE_PATH = f"input/input{__file__[-5:-3]}.txt"
 NUM_RED_CUBES = 12
 NUM_GREEN_CUBES = 13
 NUM_BLUE_CUBES = 14

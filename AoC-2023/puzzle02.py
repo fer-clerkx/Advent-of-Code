@@ -1,65 +1,27 @@
 import re
+import math
 
 FILE_PATH = f"input/input{__file__[-5:-3]}.txt"
-NUM_RED_CUBES = 12
-NUM_GREEN_CUBES = 13
-NUM_BLUE_CUBES = 14
 
-def main():
-    solutionA = solvePuzzle02A()
-    print("Solution A:", solutionA)
-    solutionB = solvePuzzle02B()
-    print("Solution B:", solutionB)
+with open(FILE_PATH) as input_file:
+    input_lines = input_file.readlines()
 
-def solvePuzzle02A():
-    inputFile = open(FILE_PATH, "r", encoding="UTF-8")
-    sum = 0
-    while True:
-        line = inputFile.readline()
-        if line == "":
-            break
-        Paterns = (
-            "^Game (?P<ID>\d+):",
-            "(?P<red>\d+) red",
-            "(?P<green>\d+) green",
-            "(?P<blue>\d+) blue"
-        )
-        matches = re.finditer('|'.join(Paterns), line)
-        gamePosible = True
-        gameID = int(next(matches).group('ID'))
-        for match in matches:
-            if match.group('red') and int(match.group('red')) > NUM_RED_CUBES:
-                gamePosible = False
-            elif match.group('green') and int(match.group('green')) > NUM_GREEN_CUBES:
-                gamePosible = False
-            elif match.group('blue') and int(match.group('blue')) > NUM_BLUE_CUBES:
-                gamePosible = False
-        if gamePosible:
-            sum += gameID
-    return sum
 
-def solvePuzzle02B():
-    inputFile = open(FILE_PATH, "r", encoding="UTF-8")
-    sum = 0
-    while True:
-        line = inputFile.readline()
-        if line == "":
-            break
-        Paterns = (
-            "(?P<red>\d+) red",
-            "(?P<green>\d+) green",
-            "(?P<blue>\d+) blue"
-        )
-        matches = re.finditer('|'.join(Paterns), line)
-        redMax = greenMax = blueMax = 0
-        for match in matches:
-            if match.group('red') and int(match.group('red')) > redMax:
-                redMax = int(match.group('red'))
-            elif match.group('green') and int(match.group('green')) > greenMax:
-                greenMax = int(match.group('green'))
-            elif match.group('blue') and int(match.group('blue')) > blueMax:
-                blueMax = int(match.group('blue'))
-        sum += redMax*greenMax*blueMax
-    return sum
+sum_IDs = 0
+sum_powers = 0
+for line in input_lines:
+    line_parts = re.sub("[:,;]", "", line).split()
+    color_max = {}
+    for number, color in zip(line_parts[2::2], line_parts[3::2]):
+        color_max[color] = max(color_max.get(color, 1), int(number))
 
-main()
+    if (color_max["red"] <= 12 and color_max["green"] <= 13
+            and color_max["blue"] <= 14):
+        sum_IDs += int(line_parts[1])
+    sum_powers += math.prod(color_max.values())
+
+# Part 1
+print("Solution 1:", sum_IDs)
+
+# Part 2
+print("Solution 2:", sum_powers)

@@ -24,11 +24,11 @@ def sum_of_digits(string: str):
 
 
 # Part 1
-print("Solution 1:", sum_of_digits(input_string))
+print(f"Solution 1: {sum_of_digits(input_string)}")
 
 # Part 2
 for key, value in NUMBER_DICT.items():
     # Place text version on both sides to make sure overlapping numbers
     # are still detected.
     input_string = input_string.replace(key, value)
-print("Solution 2:", sum_of_digits(input_string))
+print(f"Solution 2: {sum_of_digits(input_string)}")

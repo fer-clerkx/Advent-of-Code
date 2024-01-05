@@ -15,10 +15,10 @@ matches_per_line = [len(left & right) for (left, right)
                                       in zip(left_groups, right_groups)]
 points = sum(2 ** (matches-1) for matches in matches_per_line if matches > 0)
 
-print("Solution 1:", points)
+print(f"Solution 1: {points}")
 
 num_cards = np.ones(len(input_lines), dtype=np.uint32)
 for i, num_matches in enumerate(matches_per_line):
     num_cards[i+1 : i+1+num_matches] += num_cards[i]
 
-print("Solution 2:", num_cards.sum())
+print(f"Solution 2: {num_cards.sum()}")

@@ -21,7 +21,7 @@ for line in input_lines:
     sum_powers += math.prod(color_max.values())
 
 # Part 1
-print("Solution 1:", sum_IDs)
+print(f"Solution 1: {sum_IDs}")
 
 # Part 2
-print("Solution 2:", sum_powers)
+print(f"Solution 2: {sum_powers}")

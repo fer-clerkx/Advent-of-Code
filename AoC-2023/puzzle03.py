@@ -27,6 +27,6 @@ sum_gears = sum(
                 if symbol == "*" and len(numbers) > 1
             )
 
-print("Solution 1:", sum_parts)
+print(f"Solution 1: {sum_parts}")
 
-print("Solution 2:", sum_gears)
+print(f"Solution 2: {sum_gears}")

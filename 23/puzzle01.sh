@@ -1,29 +1,21 @@
 #!/bin/bash
 
-readarray -t input < input/input01.txt
+echo -n "Solution 1: " &&
+    # Duplicate digit for lines with signle digit
+    pcregrep -o1 -o2 "(\d.*\d|(\d))" input/input01.txt |
+    pcregrep -o1 -o2 "(\d).*(\d)" |
+    paste -sd+ | bc
 
-sum=0
-for line in ${input[@]}; do
-    readarray -t numbers < <(echo "$line" | grep -o [0-9])
-    sum=$(( $sum + "${numbers[0]}${numbers[-1]}" ))
-done
-echo "Solution 1: $sum"
-
-number_dict=([1]=one \
-             [2]=two \
-             [3]=three \
-             [4]=four \
-             [5]=five \
-             [6]=six \
-             [7]=seven \
-             [8]=eight \
-             [9]=nine)
-sum=0
-for line in ${input[@]}; do
-    for ((i=1; i<=9; i++)); do
-        line=${line//${number_dict[$i]}/${number_dict[$i]}$i${number_dict[$i]}}
-    done
-    readarray -t numbers < <(echo "$line" | grep -o [0-9])
-    sum=$(( $sum + "${numbers[0]}${numbers[-1]}" ))
-done
-echo "Solution 2: $sum"
+echo -n "Solution 2: " && cat input/input01.txt |
+    sed 's/one/one1one/g' |
+    sed 's/two/two2two/g' |
+    sed 's/three/three3three/g' |
+    sed 's/four/four4four/g' |
+    sed 's/five/five5five/g' |
+    sed 's/six/six6six/g' |
+    sed 's/seven/seven7seven/g' |
+    sed 's/eight/eight8eight/g' |
+    sed 's/nine/nine9nine/g' |
+    pcregrep -o1 -o2 "(\d.*\d|(\d))" |
+    pcregrep -o1 -o2 "(\d).*(\d)" |
+    paste -sd+ | bc

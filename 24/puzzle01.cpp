@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <unordered_map>
 
-#define INPUT_FILE "24/input/input01.txt"
+#define INPUT_FILE "input/input01.txt"
 
 int puzzle01::getSolutionA() {
     std::vector<int> leftList, rightList;

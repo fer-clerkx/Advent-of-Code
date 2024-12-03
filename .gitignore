@@ -3,3 +3,4 @@ aoc-2022
 *.o
 **/build
 test.txt
+puzzle

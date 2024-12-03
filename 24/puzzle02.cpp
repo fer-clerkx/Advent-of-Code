@@ -3,7 +3,7 @@
 #include <fstream>
 #include <cstdlib>
 
-#define INPUT_FILE "24/input/input02.txt"
+#define INPUT_FILE "input/input02.txt"
 
 int puzzle02::getSolutionA() {
     std::vector<std::vector<int>> reportList;

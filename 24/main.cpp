@@ -1,4 +1,4 @@
-#include "puzzle.h"
+#include "main.h"
 #include <string>
 
 int main(int argc, char **argv) {

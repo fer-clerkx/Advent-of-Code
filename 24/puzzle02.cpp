@@ -1,28 +1,14 @@
-#include <iostream>
-#include <fstream>
+#include "puzzle02.h"
 #include <vector>
+#include <fstream>
 #include <cstdlib>
-
-void parseInput(std::vector<std::vector<int>>& reportList);
-int getSolutionA(std::vector<std::vector<int>>& reportList);
-int getSolutionB(std::vector<std::vector<int>>& reportList);
-bool checkReport(const std::vector<int>& report);
-bool checkReportWithBadLevel(const std::vector<int>& report);
-bool checkWindow(std::vector<int>::const_iterator it);
 
 #define INPUT_FILE "24/input/input02.txt"
 
-int main() {
+int puzzle02::getSolutionA() {
     std::vector<std::vector<int>> reportList;
     parseInput(reportList);
 
-    std::cout << "Solution A: " << getSolutionA(reportList) << '\n';
-    std::cout << "Solution B: " << getSolutionB(reportList) << '\n';
-
-    return 0;
-}
-
-int getSolutionA(std::vector<std::vector<int>>& reportList) {
     int solutionA = 0;
     for (const std::vector<int>& report : reportList) {
         solutionA += checkReport(report);
@@ -30,7 +16,10 @@ int getSolutionA(std::vector<std::vector<int>>& reportList) {
     return solutionA;
 }
 
-int getSolutionB(std::vector<std::vector<int>>& reportList) {
+int puzzle02::getSolutionB() {
+    std::vector<std::vector<int>> reportList;
+    parseInput(reportList);
+
     int solutionB = 0;
     for (const std::vector<int>& report : reportList) {
         solutionB += checkReportWithBadLevel(report);
@@ -38,14 +27,14 @@ int getSolutionB(std::vector<std::vector<int>>& reportList) {
     return solutionB;
 }
 
-bool checkReport(const std::vector<int>& report) {
+bool puzzle02::checkReport(const std::vector<int>& report) {
     for (auto it = report.begin(); it < report.end() - 2; it++)
         if (!checkWindow(it))
             return false;
     return true;
 }
 
-bool checkReportWithBadLevel(const std::vector<int>& report) {
+bool puzzle02::checkReportWithBadLevel(const std::vector<int>& report) {
     bool safe = true;
     for (int i = 0; i < report.size() - 2; i++) {
         if (checkWindow(report.begin() + i))
@@ -61,7 +50,7 @@ bool checkReportWithBadLevel(const std::vector<int>& report) {
     return true;
 }
 
-bool checkWindow(std::vector<int>::const_iterator it) {
+bool puzzle02::checkWindow(std::vector<int>::const_iterator it) {
     int diff12 = *it - *std::next(it);
     int diff23 = *std::next(it) - *std::next(it, 2);
     if ((diff12 ^ diff23) < 0)  // Check if two numbers have different sign
@@ -73,7 +62,7 @@ bool checkWindow(std::vector<int>::const_iterator it) {
     return true;
 }
 
-void parseInput(std::vector<std::vector<int>>& reportList) {
+void puzzle02::parseInput(std::vector<std::vector<int>>& reportList) {
     std::ifstream inputFile(INPUT_FILE);
     size_t inputSize = 0;
     char line[256];

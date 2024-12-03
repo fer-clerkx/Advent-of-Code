@@ -1,3 +1,6 @@
+#ifndef _PUZZLE_BASE
+#define _PUZZLE_BASE
+
 class puzzleBase {
 public:
     void printSolutionA();
@@ -6,3 +9,5 @@ private:
     virtual int getSolutionA() = 0;
     virtual int getSolutionB() = 0;
 };
+
+#endif  // _PUZZLE_BASE

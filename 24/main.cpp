@@ -2,7 +2,7 @@
 #include <string>
 
 int main(int argc, char **argv) {
-    int day = argc > 1 ? std::stoi(argv[1]) : 3;
+    int day = argc > 1 ? std::stoi(argv[1]) : 4;
     puzzleBase* puzzle;
     switch (day) {
     case 1:
@@ -13,6 +13,9 @@ int main(int argc, char **argv) {
         break;
     case 3:
         puzzle = new puzzle03();
+        break;
+    case 4:
+        puzzle = new puzzle04();
         break;
     }
     puzzle->printSolutionA();

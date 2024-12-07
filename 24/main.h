@@ -2,3 +2,4 @@
 #include "puzzle01.h"
 #include "puzzle02.h"
 #include "puzzle03.h"
+#include "puzzle04.h"
